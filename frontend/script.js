@@ -1,5 +1,5 @@
 
-const API_BASE = "https://data-lens-2-b61a6.containers.snapdeploy.app/";
+const API_BASE = "https://data-lens-2-b61a6.containers.snapdeploy.app";
 
 const state = {
     fileId: null,
@@ -34,9 +34,11 @@ function showMessage(message, type = "info") {
     }, 5000);
 }
 
-
 async function apiRequest(endpoint, options = {}) {
-    const response = await fetch(`${API_BASE}${endpoint}`, options);
+    const base = API_BASE.replace(/\/+$/, "");
+    const path = endpoint.replace(/^\/+/, "");
+
+    const response = await fetch(`${base}/${path}`, options);
 
     if (!response.ok) {
         let message = "Something went wrong.";
