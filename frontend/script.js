@@ -1,5 +1,5 @@
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://data-lens-2-b61a6.containers.snapdeploy.app/";
 
 const state = {
     fileId: null,
