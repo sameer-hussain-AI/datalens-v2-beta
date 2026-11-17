@@ -7,3 +7,5 @@ numpy
 matplotlib
 openpyxl
 xlrd
+scipy
+
