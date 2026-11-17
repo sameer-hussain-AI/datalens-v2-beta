@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#09090F">
+    <meta name="description"
+        content="Data Lens is a modern workspace for exploring, cleaning, visualizing and analyzing datasets.">
+    <meta name="color-scheme" content="dark">
+
+    <title>Data Lens V2 | Data Analytics Platform</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <a class="skip-link" href="#mainContent">Skip to content</a>
+
+    <div class="app-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar" aria-label="Main sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">D</div>
+                <div>
+                    <h2>Data Lens</h2>
+                    <span>ANALYTICS PLATFORM</span>
+                </div>
+            </div>
+
+            <div class="workspace-label">WORKSPACE</div>
+
+            <nav class="navigation" aria-label="Workspace navigation">
+                <button class="nav-link active" data-page="overview">
+                    <span>◫</span> Overview
+                </button>
+
+                <button class="nav-link" data-page="preview">
+                    <span>▤</span> Data Preview
+                </button>
+
+                <button class="nav-link" data-page="quality">
+                    <span>◈</span> Data Quality
+                </button>
+
+                <button class="nav-link" data-page="cleaning">
+                    <span>✧</span> Data Cleaning
+                </button>
+
+                <button class="nav-link" data-page="visualization">
+                    <span>▥</span> Visualization
+                </button>
+
+                <button class="nav-link" data-page="statistics">
+                    <span>∑</span> Statistics
+                </button>
+
+                <button class="nav-link" data-page="about">
+                    <span>ⓘ</span> About
+                </button>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-info">
+                    <div class="status-dot"></div>
+                    <div>
+                        <strong>System ready</strong>
+                        <small>Data Lens V2.0</small>
+                    </div>
+                </div>
+
+                <div class="sidebar-footer">
+                    Built for smarter data analysis.
+                </div>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content" id="mainContent">
+
+            <!-- TOP HEADER -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button class="mobile-menu" id="mobileMenu">☰</button>
+
+                    <div>
+                        <p class="breadcrumb">Workspace / <span id="breadcrumbPage">Overview</span></p>
+                        <h1 id="pageTitle">Overview</h1>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="connection-status" role="status" aria-live="polite">
+                        <span class="status-dot"></span>
+                        Backend connection
+                    </div>
+
+                    <div class="user-avatar">SH</div>
+                </div>
+
+            </header>
+
+
+            <!-- GLOBAL STATUS MESSAGE -->
+            <div id="statusMessage" class="status-message hidden"></div>
+
+
+            <!-- UPLOAD SECTION -->
+            <section class="upload-section" aria-labelledby="workspaceHeading">
+
+                <div class="upload-heading">
+                    <div>
+                        <h2 id="workspaceHeading">Your data workspace</h2>
+                        <p>Upload a dataset to start exploring, cleaning and analyzing your data.</p>
+                    </div>
+
+                    <span class="version-tag">V2.0</span>
+                </div>
+
+                <div class="upload-box" id="uploadBox" role="group" aria-label="Dataset upload area">
+
+                    <input type="file" id="fileInput" aria-label="Choose a dataset file" accept=".csv,.xlsx,.xls"
+                        hidden>
+
+                    <div class="upload-icon">↑</div>
+
+                    <h3>Upload your dataset</h3>
+
+                    <p>
+                        Drag and drop your file here, or
+                        <button id="browseButton" class="text-button">browse files</button>
+                    </p>
+
+                    <small>Supported formats: CSV, XLSX, XLS</small>
+
+                    <div id="fileName" class="file-name"></div>
+
+                </div>
+
+                <div id="datasetInfo" class="dataset-info hidden">
+                    <div>
+                        <span class="file-symbol">▤</span>
+                        <div>
+                            <strong id="currentFileName">No dataset</strong>
+                            <small>Currently loaded dataset</small>
+                        </div>
+                    </div>
+
+                    <button id="removeDataset" class="outline-button">
+                        Remove dataset
+                    </button>
+                </div>
+
+            </section>
+
+
+            <!-- OVERVIEW PAGE -->
+            <section class="page active" id="overview">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Dataset overview</h2>
+                        <p>A quick snapshot of your uploaded dataset.</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon blue">▤</div>
+                        <span>Total rows</span>
+                        <h3 id="totalRows">—</h3>
+                        <small>Records in dataset</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon purple">▦</div>
+                        <span>Total columns</span>
+                        <h3 id="totalColumns">—</h3>
+                        <small>Dataset attributes</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon cyan">◫</div>
+                        <span>Total entries</span>
+                        <h3 id="totalEntries">—</h3>
+                        <small>Cells in dataset</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orange">!</div>
+                        <span>Missing values</span>
+                        <h3 id="totalMissing">—</h3>
+                        <small>Empty cells detected</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon red">⧉</div>
+                        <span>Duplicate rows</span>
+                        <h3 id="totalDuplicates">—</h3>
+                        <small>Repeated records</small>
+                    </div>
+
+                </div>
+
+
+                <div class="content-grid">
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Data preview</h3>
+                                <p>First few records from your dataset.</p>
+                            </div>
+
+                            <button class="small-button" data-go="preview">
+                                View all
+                            </button>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead id="overviewTableHead"></thead>
+                                <tbody id="overviewTableBody">
+                                    <tr>
+                                        <td class="empty-state">Upload a dataset to see its preview.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Dataset information</h3>
+                                <p>Column names and data types.</p>
+                            </div>
+                        </div>
+
+                        <div id="columnInformation" class="column-information">
+                            <p class="empty-state">No dataset loaded.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DATA PREVIEW PAGE -->
+            <section class="page" id="preview">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Explore your data</h2>
+                        <p>Search, filter, sort and inspect dataset records.</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+
+                    <div class="toolbar">
+
+                        <input type="search" id="searchInput" placeholder="Search across all records...">
+
+                        <select id="rowLimit">
+                            <option value="10">10 rows</option>
+                            <option value="25">25 rows</option>
+                            <option value="50">50 rows</option>
+                            <option value="100">100 rows</option>
+                        </select>
+
+                        <select id="columnSelect">
+                            <option value="">All columns</option>
+                        </select>
+
+                        <button class="primary-button" id="applyPreview">
+                            Apply
+                        </button>
+
+                    </div>
+
+                    <div class="table-container large-table">
+                        <table>
+                            <thead id="previewTableHead"></thead>
+                            <tbody id="previewTableBody">
+                                <tr>
+                                    <td class="empty-state">Upload a dataset to begin.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <span id="pageInformation">Page 1</span>
+
+                        <div>
+                            <button class="outline-button" id="previousPage">Previous</button>
+                            <button class="outline-button" id="nextPage">Next</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DATA QUALITY PAGE -->
+            <section class="page" id="quality">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Data quality assessment</h2>
+                        <p>Understand missing values, duplicates and data completeness.</p>
+                    </div>
+
+                    <button class="primary-button" id="refreshQuality">
+                        Refresh analysis
+                    </button>
+                </div>
+
+                <div class="quality-grid">
+
+                    <div class="panel quality-score">
+                        <span>Data completeness</span>
+                        <h2 id="completenessScore">—%</h2>
+                        <div class="progress-track">
+                            <div id="completenessBar" class="progress-fill"></div>
+                        </div>
+                        <p>Percentage of non-missing cells.</p>
+                    </div>
+
+                    <div class="panel quality-score">
+                        <span>Missing values</span>
+                        <h2 id="missingPercentage">—%</h2>
+                        <p>Percentage of empty cells.</p>
+                    </div>
+
+                    <div class="panel quality-score">
+                        <span>Duplicate percentage</span>
+                        <h2 id="duplicatePercentage">—%</h2>
+                        <p>Percentage of duplicate rows.</p>
+                    </div>
+
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Column-level quality</h3>
+                            <p>Missing values and unique values for each column.</p>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Data type</th>
+                                    <th>Missing values</th>
+                                    <th>Missing %</th>
+                                    <th>Unique values</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="qualityTableBody">
+                                <tr>
+                                    <td colspan="5" class="empty-state">No quality results yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- DATA CLEANING PAGE -->
+            <section class="page" id="cleaning">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Clean your dataset</h2>
+                        <p>Apply cleaning operations and prepare your data for analysis.</p>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+
+                    <div class="panel">
+
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Cleaning operations</h3>
+                                <p>Select an operation to clean your dataset.</p>
+                            </div>
+                        </div>
+
+                        <form id="cleaningForm">
+
+                            <label for="cleanOperation">Cleaning operation</label>
+
+                            <select id="cleanOperation" required>
+                                <option value="drop_missing_rows">Remove rows with missing values</option>
+                                <option value="drop_missing_columns">Remove columns with missing values</option>
+                                <option value="fill_missing_with_value">Fill missing with custom value</option>
+                                <option value="fill_missing_with_mean">Fill missing with mean</option>
+                                <option value="fill_missing_with_median">Fill missing with median</option>
+                                <option value="fill_missing_with_mode">Fill missing with mode</option>
+                                <option value="remove_duplicate_rows">Remove duplicate rows</option>
+                                <option value="remove_duplicate_values">Remove duplicates by selected columns</option>
+                                <option value="drop_selected_columns">Remove selected columns</option>
+                            </select>
+
+                            <label for="cleanColumn">Column (optional)</label>
+                            <select id="cleanColumn">
+                                <option value="">Select a column</option>
+                            </select>
+
+                            <label for="cleanValue">Custom fill value</label>
+                            <input type="text" id="cleanValue" placeholder="Enter a value">
+
+                            <button type="submit" class="primary-button full-width">
+                                Apply cleaning operation
+                            </button>
+
+                        </form>
+
+                        <p class="helper-text">
+                            Cleaning operations will be applied to your working dataset.
+                        </p>
+
+                    </div>
+
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Cleaning summary</h3>
+                                <p>Compare your original and cleaned dataset.</p>
+                            </div>
+                        </div>
+
+                        <div id="cleaningSummary" class="summary-list">
+                            <p class="empty-state">No cleaning operations performed yet.</p>
+                        </div>
+
+                        <div class="download-area">
+                            <h4>Export cleaned dataset</h4>
+
+                            <div class="download-buttons">
+                                <button class="outline-button" id="downloadCsv">
+                                    Download CSV
+                                </button>
+
+                                <button class="primary-button" id="downloadExcel">
+                                    Download Excel
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- VISUALIZATION PAGE -->
+            <section class="page" id="visualization">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Data visualization</h2>
+                        <p>Turn your dataset into meaningful visual insights.</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+
+                    <form id="visualizationForm" class="visualization-controls">
+
+                        <!-- Chart type -->
+                        <div>
+                            <label for="chartType">Chart type</label>
+                            <select id="chartType">
+                                <option value="bar">Bar chart</option>
+                                <option value="line">Line chart</option>
+                                <option value="scatter">Scatter plot</option>
+                                <option value="histogram">Histogram</option>
+                                <option value="pie">Pie chart</option>
+                                <option value="box">Box plot</option>
+                                <option value="area">Area chart</option>
+                                <option value="horizontal_bar">Horizontal bar chart</option>
+                                <option value="heatmap">Correlation heatmap</option>
+                            </select>
+                        </div>
+
+                        <!-- X / Single column selector -->
+                        <div id="chartXGroup">
+                            <label for="chartX" id="chartXLabel">X-axis column</label>
+                            <select id="chartX">
+                                <option value="">Select column</option>
+                            </select>
+                        </div>
+
+                        <!-- Y column selector -->
+                        <div id="chartYGroup">
+                            <label for="chartY" id="chartYLabel">Y-axis column</label>
+                            <select id="chartY">
+                                <option value="">Select column</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="primary-button">
+                            Generate chart
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <div class="panel chart-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Visualization output</h3>
+                            <p>Your generated chart will appear here.</p>
+                        </div>
+                    </div>
+
+                    <div id="chartOutput" class="chart-output">
+                        <div class="empty-chart">
+                            <div>▥</div>
+                            <h3>No visualization yet</h3>
+                            <p>Select a chart type and columns to generate your first chart.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- STATISTICS PAGE -->
+            <section class="page" id="statistics">
+
+                <div class="section-heading">
+                    <div>
+                        <h2>Statistical analysis</h2>
+                        <p>Discover statistical patterns and relationships in your data.</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+
+                    <div class="statistics-controls">
+                        <div>
+                            <label for="statisticsColumn">Select numeric column</label>
+                            <select id="statisticsColumn">
+                                <option value="">Select column</option>
+                            </select>
+                        </div>
+
+                        <button class="primary-button" id="runStatistics">
+                            Run analysis
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="statistics-grid" id="statisticsOutput">
+
+                    <div class="panel stat-result">
+                        <span>Mean</span>
+                        <h3 id="statMean">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Median</span>
+                        <h3 id="statMedian">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Mode</span>
+                        <h3 id="statMode">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Minimum</span>
+                        <h3 id="statMin">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Maximum</span>
+                        <h3 id="statMax">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Standard deviation</span>
+                        <h3 id="statStd">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Variance</span>
+                        <h3 id="statVariance">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Range</span>
+                        <h3 id="statRange">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Skewness</span>
+                        <h3 id="statSkewness">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Kurtosis</span>
+                        <h3 id="statKurtosis">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Q1</span>
+                        <h3 id="statQ1">—</h3>
+                    </div>
+
+                    <div class="panel stat-result">
+                        <span>Q3</span>
+                        <h3 id="statQ3">—</h3>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ABOUT PAGE -->
+            <section class="page" id="about">
+
+                <div class="about-container">
+
+                    <!-- HERO -->
+                    <div class="about-hero">
+                        <span class="version-tag">MEET DATA LENS V2.0</span>
+                        <h2>Making data analysis simpler and smarter.</h2>
+                        <p>
+                            Data Lens is a modern data analytics workspace designed
+                            to help users explore, understand, clean, visualize and
+                            analyze their datasets in one place.
+                        </p>
+                    </div>
+
+                    <!-- ABOUT THE PLATFORM -->
+                    <div class="about-section">
+                        <h2>About Data Lens</h2>
+                        <p>
+                            Working with data often involves multiple tools and
+                            repetitive tasks. Data Lens brings essential data
+                            analysis capabilities together in one intuitive workspace.
+                            Upload your dataset, explore its structure, identify
+                            quality issues, clean your data and discover insights
+                            through visualizations and statistical analysis.
+                        </p>
+                    </div>
+
+                    <!-- FEATURES -->
+                    <div class="about-section">
+                        <h2>What you can do</h2>
+                        <p>Explore the core capabilities of Data Lens.</p>
+
+                        <div class="about-features">
+
+                            <div class="about-feature">
+                                <h3>01. Data Overview</h3>
+                                <p>Understand dataset dimensions, columns, data types and key information.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>02. Data Quality</h3>
+                                <p>Identify missing values, duplicates and data completeness issues.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>03. Data Cleaning</h3>
+                                <p>Apply cleaning operations and export your prepared dataset.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>04. Visualization</h3>
+                                <p>Create charts to explore patterns, distributions and relationships.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>05. Statistical Analysis</h3>
+                                <p>Explore statistical measures and understand numerical data.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>06. Multiple File Formats</h3>
+                                <p>Work with CSV, XLSX and XLS datasets.</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TECHNOLOGY -->
+                    <div class="about-section">
+                        <h2>Technology stack</h2>
+                        <p>Data Lens is built using modern tools and technologies.</p>
+
+                        <div class="about-features">
+                            <div class="about-feature">
+                                <h3>Python</h3>
+                                <p>Core programming and data processing.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>FastAPI</h3>
+                                <p>Backend API and application communication.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>Pandas</h3>
+                                <p>Dataset manipulation and analysis.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>Matplotlib</h3>
+                                <p>Data visualization and charts.</p>
+                            </div>
+
+                            <div class="about-feature">
+                                <h3>HTML, CSS & JavaScript</h3>
+                                <p>Frontend structure, styling and interactions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DEVELOPER -->
+                    <div class="about-section">
+                        <h2>Meet the developer</h2>
+
+                        <div class="developer-card">
+
+                            <div class="developer-avatar">
+                                SH
+                            </div>
+
+                            <div class="developer-details">
+                                <h3>Sameer Hussain</h3>
+
+                                <span class="developer-role">
+                                    Developer of Data Lens V2
+                                </span>
+
+                                <p>
+                                    I'm a technology enthusiast passionate about
+                                    data analytics, Python, artificial intelligence
+                                    and building practical software solutions.
+                                    I enjoy learning through hands-on projects
+                                    and turning ideas into useful applications.
+                                </p>
+
+                                <p>
+                                    My technical interests include Python, SQL,
+                                    Excel, Power BI, Data Analytics and AI & Machine Learning.
+                                </p>
+
+                                <div class="developer-links">
+                                    <a href="https://github.com/sameer-hussain-AI" target="_blank"
+                                        rel="noopener noreferrer">
+                                        GitHub ↗
+                                    </a>
+
+                                    <a href="https://www.linkedin.com/in/sameer-hussain-920722356/" target="_blank"
+                                        rel="noopener noreferrer">
+                                        LinkedIn ↗
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- MISSION -->
+                    <div class="about-section">
+                        <h2>Our philosophy</h2>
+                        <p>
+                            Learn by building. Turn ideas into practical solutions.
+                            Keep improving.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <footer class="main-footer">
+                <span>© 2026 Data Lens V2</span>
+                <span>Intelligent Data Analysis Platform</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
